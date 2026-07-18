@@ -7,6 +7,7 @@ import logging
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import rag_skeleton
@@ -18,6 +19,13 @@ from rag_skeleton import generate, retrieve
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="freelance-sa-guide")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 
 
 class AskRequest(BaseModel):
