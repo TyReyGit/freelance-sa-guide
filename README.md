@@ -2,6 +2,14 @@
 
 A minimal RAG pipeline over SARS guides for South African freelancers (provisional tax, turnover tax, and the ITR14 company return), built with pypdf, sentence-transformers, and Chroma.
 
+## Setup
+
+Run this first, before anything else — it downloads the three source PDFs from sars.gov.za into `./docs` (they aren't checked into git):
+
+```bash
+python setup_docs.py
+```
+
 ## Evaluation
 
 Retrieval quality is tracked with `eval_retrieval.py`, which runs `retrieve()` for each question in `eval_questions.json` and checks whether the expected source document appears in the top-k hits (no LLM call — retrieval only).
@@ -25,3 +33,9 @@ python eval_retrieval.py --k 4
 ## Status
 
 **Week 2 complete:** corpus of 3 SARS guides, 15-question eval set, retrieval scoring script, dual-provider generation (Gemini + Groq) with automatic retry on Gemini and manual provider override via CLI flag.
+
+## Attribution & disclaimer
+
+The source documents indexed by this project (`GEN-PT-01-G01`, `IT-GEN-04-G01`, `TT-GEN-01-G01`) are external guides published by the **South African Revenue Service (SARS)** and remain the property of SARS. They are downloaded on demand from sars.gov.za by `setup_docs.py` rather than redistributed in this repository, and are used here strictly for educational and demonstration purposes under SARS's terms of use.
+
+This project is not affiliated with, endorsed by, or produced by SARS. It is not a substitute for professional tax advice — for authoritative guidance, always refer to the original documents and other resources at [sars.gov.za](https://www.sars.gov.za/).
