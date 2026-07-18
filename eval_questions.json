@@ -1,0 +1,77 @@
+[
+  {
+    "question": "I've just started freelancing full-time as a sole proprietor — do I actually have to register as a provisional taxpayer, or is that only for companies?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should explain that a provisional taxpayer includes any person (other than a company) who earns income other than remuneration/an allowance, which covers most freelancers. Should mention the exclusions too (e.g. natural persons whose taxable income won't exceed the tax threshold, or whose non-business income like interest/dividends/rent is under R30,000), and note that two provisional payments per year are generally required."
+  },
+  {
+    "question": "What are the actual deadlines for my two provisional tax payments if my year runs March to February?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should state the first period payment is due six months into the year of assessment (31 August for a Feb year-end) and the second is due on the last day of the year of assessment (28/29 February), with an optional third top-up payment afterward (e.g. by 30 September) to avoid interest."
+  },
+  {
+    "question": "If I underestimate my income on my second provisional return and it turns out I earned way more, what penalty am I looking at?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should describe the paragraph 20 underestimation penalty: broadly 20% of the tax difference between what was paid and what should have been paid, with different tests depending on whether actual taxable income is above or below R1 million (90% test vs 80% test), and that it can be reduced by any late-payment penalty already charged."
+  },
+  {
+    "question": "What interest rate does SARS currently charge on a late provisional tax payment?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should cite the section 89bis interest rates given in the guide: 10.25% from 1 March–30 April 2025, 11.00% from 1 May–30 November 2025, and 10.25% from 1 December 2025 onward, noting these rates change periodically via Government Gazette."
+  },
+  {
+    "question": "I contribute to a medical aid for myself and my partner — how much does that actually reduce my tax bill?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should give the medical scheme fees tax credit amounts: R376 for the main member, R376 for the first dependant, and R254 for each additional dependant, and note it's deducted directly from normal tax payable."
+  },
+  {
+    "question": "My freelance income is growing — at what point do I have to stop using Turnover Tax and move to the normal tax system?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should explain the R1 million qualifying turnover threshold, that exceeding it triggers compulsory deregistration unless the business can show the increase is minor/temporary (with a written motivation to SARS within 21 business days), and that once deregistered a business can't re-register for Turnover Tax."
+  },
+  {
+    "question": "If I sell my old laptop that I used for client work, does that sale count toward my Turnover Tax number?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should say that 50% of proceeds from the sale of business assets (receipts of a capital nature) must be added to gross receipts as an inclusion when calculating taxable turnover on the TT03."
+  },
+  {
+    "question": "What tax rate would I actually pay on, say, R600,000 of taxable turnover under the Turnover Tax system?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should apply the current bracket table: 0% up to R335,000, 1% on the amount between R335,001–R500,000, and R1,650 + 2% on the amount above R500,000 up to R750,000 (so for R600,000: R1,650 + 2% of R100,000 = R3,650)."
+  },
+  {
+    "question": "More than a fifth of what I earn comes from consulting work rather than selling products — can I still be on Turnover Tax?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should state that if more than 20% of a natural person's total receipts come from rendering a professional service, the business does not qualify for Turnover Tax and must be taxed under the normal income tax system — this is a compulsory deregistration trigger."
+  },
+  {
+    "question": "I've set up a one-person consulting company and I do basically all the work myself for one big client — could SARS say my company is just a 'personal service provider' in disguise, and why would that matter?",
+    "expected_source": "IT-GEN-04-G01-How-to-complete-the-Income-Tax-Return-ITR14-for-Companies-External-Guide.pdf",
+    "note": "Should explain the Personal Service Provider test from the Fourth Schedule: services rendered personally by a connected person who would be an employee if engaged directly, or who works under the client's control/supervision mainly at the client's premises, or where over 80% of income comes from one client — unless the company has 3+ full-time non-connected employees. Should mention the consequence: s23(k) disallows deductions like legal expenses, bad debts, pension/provident contributions, and premises-related costs."
+  },
+  {
+    "question": "Does my small consulting Pty Ltd qualify as a Small Business Corporation for the lower company tax rates?",
+    "expected_source": "IT-GEN-04-G01-How-to-complete-the-Income-Tax-Return-ITR14-for-Companies-External-Guide.pdf",
+    "note": "Should list the s12E requirements: incorporated in South Africa, all shareholders/members are natural persons at all times, gross income not exceeding R20 million for the year, personal service and investment income combined not exceeding 20% of total receipts/accruals (including capital gains), and the company must not be a Personal Service Provider."
+  },
+  {
+    "question": "I'm the sole director and only shareholder of my company — do I still need to fill in the beneficial ownership section on the ITR14?",
+    "expected_source": "IT-GEN-04-G01-How-to-complete-the-Income-Tax-Return-ITR14-for-Companies-External-Guide.pdf",
+    "note": "Should confirm that beneficial ownership disclosure is required on ITR14 returns from the 2022 tax year onward, identifying the individual(s) who ultimately own or exercise effective control of the company — which in a sole-owner case would just be that person."
+  },
+  {
+    "question": "What's the VAT registration threshold and how do I go about registering for VAT as a freelancer?",
+    "expected_source": "none",
+    "note": "None of the three supplied guides (Provisional Tax, Turnover Tax, ITR14) covers VAT registration or thresholds — a correct answer should say this isn't covered in the provided documents rather than guessing or inventing a threshold/process."
+  },
+  {
+    "question": "Can I deduct my home office expenses if I work out of my spare bedroom as a freelancer?",
+    "expected_source": "none",
+    "note": "Home office deduction rules aren't addressed in any of the three guides (they cover provisional tax mechanics, Turnover Tax administration, and the ITR14 company return, not the s11(a)/s23(b) home office deduction regime). A correct answer should state this isn't in the documents rather than fabricating an answer."
+  },
+  {
+    "question": "If I take on a part-time assistant to help with admin, what UIF and COIDA registrations am I required to do?",
+    "expected_source": "none",
+    "note": "UIF only appears once in the Turnover Tax guide as a line-item label ('Employee expenses: UIF contributions and SDL') with no explanation of registration or rates, and COIDA isn't mentioned at all. A correct answer should say this isn't covered in the provided documents rather than answering from the stray label or general knowledge."
+  }
+]
