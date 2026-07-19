@@ -74,12 +74,21 @@ def get_collection():
     return client.get_or_create_collection(COLLECTION_NAME, embedding_function=embed_fn)
 
 
+INDEX_BATCH_SIZE = 50
+
+
 def index_if_needed(collection):
     if collection.count() > 0:
         return
     pages = load_pdfs(DOCS_DIR)
     chunks, metadatas, ids = build_chunks(pages)
-    collection.add(documents=chunks, metadatas=metadatas, ids=ids)
+    for start in range(0, len(chunks), INDEX_BATCH_SIZE):
+        end = start + INDEX_BATCH_SIZE
+        collection.add(
+            documents=chunks[start:end],
+            metadatas=metadatas[start:end],
+            ids=ids[start:end],
+        )
     print(f"Indexed {len(chunks)} chunks from {len(pages)} pages.", file=sys.stderr)
 
 
