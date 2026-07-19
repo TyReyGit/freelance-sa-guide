@@ -26,7 +26,7 @@ app = FastAPI(title="freelance-sa-guide")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "https://freelance-sa-guide.vercel.app"],
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
