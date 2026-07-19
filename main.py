@@ -3,7 +3,6 @@ FastAPI wrapper around the rag_skeleton retrieval/generation pipeline.
 Run: uvicorn main:app --reload
 """
 
-import glob
 import logging
 import os
 import threading
@@ -14,8 +13,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+import download_index
 import rag_skeleton
-import setup_docs
 from rag_skeleton import generate, retrieve
 
 # Importing rag_skeleton already ran its module-level load_dotenv() call,
@@ -41,16 +40,20 @@ _index_status = "indexing"  # "indexing" | "ready" | "error"
 def _build_index() -> None:
     global _index_status
     try:
-        # On a host with no persistent disk, docs/ and chroma_db/ start out empty
-        # on every boot, so both steps need to run here rather than once by hand.
-        if not glob.glob(os.path.join(setup_docs.DOCS_DIR, "*.pdf")):
-            logger.info("docs/ is empty, downloading SARS guides...")
-            setup_docs.download_all()
+        # On a host with no persistent disk, chroma_db/ starts out empty on
+        # every boot. Rebuilding it via download_all() + index_if_needed()
+        # burns the daily embedding API quota on every cold start, so this
+        # instead pulls the pre-built index checked into a GitHub Release —
+        # see rebuild_index.py for the from-scratch path, run by hand only
+        # when the source docs actually change.
+        chroma_sqlite = os.path.join(rag_skeleton.CHROMA_DIR, "chroma.sqlite3")
+        if not os.path.exists(chroma_sqlite):
+            logger.info("chroma_db is empty, downloading pre-built index...")
+            download_index.download_and_extract()
 
         collection = rag_skeleton.get_collection()
         if collection.count() == 0:
-            logger.info("chroma_db collection is empty, indexing...")
-            rag_skeleton.index_if_needed(collection)
+            raise RuntimeError("chroma_db is still empty after downloading the release index")
 
         _index_status = "ready"
         logger.info("Indexing complete, /ask is now serving answers.")
@@ -61,9 +64,9 @@ def _build_index() -> None:
 
 @app.on_event("startup")
 def startup_event() -> None:
-    # Indexing can take ~10 minutes against the free-tier embedding rate limit.
-    # Running it here in the request thread would delay uvicorn's port bind
-    # past Render's deploy timeout, so it runs in a background thread instead.
+    # Downloading and extracting the release tarball is fast, but it still
+    # runs in a background thread so a slow network blip can't delay
+    # uvicorn's port bind past Render's deploy timeout.
     threading.Thread(target=_build_index, daemon=True).start()
 
 
