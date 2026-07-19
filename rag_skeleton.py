@@ -1,5 +1,5 @@
 """
-Minimal RAG pipeline: pypdf -> chunk -> sentence-transformers -> Chroma -> Gemini/Groq.
+Minimal RAG pipeline: pypdf -> chunk -> ONNX MiniLM -> Chroma -> Gemini/Groq.
 No frameworks. Run: python rag_skeleton.py "your question" [--provider gemini|groq]
 """
 
@@ -21,7 +21,6 @@ CHROMA_DIR = "./chroma_db"
 COLLECTION_NAME = "docs"
 CHUNK_TOKENS = 500
 OVERLAP_TOKENS = 50
-EMBED_MODEL = "all-MiniLM-L6-v2"
 TOKENIZER = tiktoken.get_encoding("cl100k_base")
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
@@ -71,9 +70,7 @@ def build_chunks(pages):
 # --- store / index --------------------------------------------------------
 def get_collection():
     client = chromadb.PersistentClient(path=CHROMA_DIR)
-    embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name=EMBED_MODEL
-    )
+    embed_fn = embedding_functions.ONNXMiniLM_L6_V2()
     return client.get_or_create_collection(COLLECTION_NAME, embedding_function=embed_fn)
 
 

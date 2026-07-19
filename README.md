@@ -1,6 +1,6 @@
 # freelance-sa-guide
 
-A minimal RAG pipeline over SARS guides for South African freelancers (provisional tax, turnover tax, and the ITR14 company return), built with pypdf, sentence-transformers, and Chroma.
+A minimal RAG pipeline over SARS guides for South African freelancers (provisional tax, turnover tax, and the ITR14 company return), built with pypdf, Chroma (ONNX MiniLM embeddings), and Gemini/Groq.
 
 ## Setup
 
