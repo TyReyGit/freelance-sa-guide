@@ -64,6 +64,14 @@ def download(filename, url, force):
     return True
 
 
+def download_all(force=False):
+    """Download every guide into DOCS_DIR. Raises RuntimeError if any download fails."""
+    os.makedirs(DOCS_DIR, exist_ok=True)
+    results = [download(filename, url, force) for filename, url in GUIDES]
+    if not all(results):
+        raise RuntimeError("One or more guides failed to download.")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -71,11 +79,10 @@ def main():
     )
     args = parser.parse_args()
 
-    os.makedirs(DOCS_DIR, exist_ok=True)
-
-    results = [download(filename, url, args.force) for filename, url in GUIDES]
-    if not all(results):
-        print("\nOne or more guides failed to download.", file=sys.stderr)
+    try:
+        download_all(args.force)
+    except RuntimeError as e:
+        print(f"\n{e}", file=sys.stderr)
         sys.exit(1)
 
     print(f"\nAll {len(GUIDES)} guides present in {DOCS_DIR}/.", file=sys.stderr)

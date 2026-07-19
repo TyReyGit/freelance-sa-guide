@@ -3,7 +3,9 @@ FastAPI wrapper around the rag_skeleton retrieval/generation pipeline.
 Run: uvicorn main:app --reload
 """
 
+import glob
 import logging
+import os
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
@@ -11,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 import rag_skeleton
+import setup_docs
 from rag_skeleton import generate, retrieve
 
 # Importing rag_skeleton already ran its module-level load_dotenv() call,
@@ -26,6 +29,20 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+def startup_event() -> None:
+    # On a host with no persistent disk, docs/ and chroma_db/ start out empty
+    # on every boot, so both steps need to run here rather than once by hand.
+    if not glob.glob(os.path.join(setup_docs.DOCS_DIR, "*.pdf")):
+        logger.info("docs/ is empty, downloading SARS guides...")
+        setup_docs.download_all()
+
+    collection = rag_skeleton.get_collection()
+    if collection.count() == 0:
+        logger.info("chroma_db collection is empty, indexing...")
+        rag_skeleton.index_if_needed(collection)
 
 
 class AskRequest(BaseModel):

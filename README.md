@@ -30,10 +30,6 @@ Run it with:
 python eval_retrieval.py --k 4
 ```
 
-## Status
-
-**Week 2 complete:** corpus of 3 SARS guides, 15-question eval set, retrieval scoring script, dual-provider generation (Gemini + Groq) with automatic retry on Gemini and manual provider override via CLI flag.
-
 ## Attribution & disclaimer
 
 The source documents indexed by this project (`GEN-PT-01-G01`, `IT-GEN-04-G01`, `TT-GEN-01-G01`) are external guides published by the **South African Revenue Service (SARS)** and remain the property of SARS. They are downloaded on demand from sars.gov.za by `setup_docs.py` rather than redistributed in this repository, and are used here strictly for educational and demonstration purposes under SARS's terms of use.

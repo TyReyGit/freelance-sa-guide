@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const API_URL = "http://localhost:8000/ask";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/ask`;
 
 type Provider = "gemini" | "groq";
 

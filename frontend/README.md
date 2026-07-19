@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment Variables
+
+- `NEXT_PUBLIC_API_URL` — base URL of the backend API. Defaults to `http://localhost:8000` if unset. Set this in `.env.local` (or your deploy platform's env config) to point at a non-local backend.
+
 ## Getting Started
 
 First, run the development server:
