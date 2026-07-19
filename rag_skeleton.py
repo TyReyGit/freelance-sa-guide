@@ -1,11 +1,12 @@
 """
-Minimal RAG pipeline: pypdf -> chunk -> ONNX MiniLM -> Chroma -> Gemini/Groq.
+Minimal RAG pipeline: pypdf -> chunk -> Gemini embeddings -> Chroma -> Gemini/Groq.
 No frameworks. Run: python rag_skeleton.py "your question" [--provider gemini|groq]
 """
 
 import os
 import sys
 import glob
+import time
 
 from dotenv import load_dotenv
 from pypdf import PdfReader
@@ -68,13 +69,38 @@ def build_chunks(pages):
 
 
 # --- store / index --------------------------------------------------------
+EMBEDDING_MODEL = "gemini-embedding-001"
+
+
 def get_collection():
     client = chromadb.PersistentClient(path=CHROMA_DIR)
-    embed_fn = embedding_functions.ONNXMiniLM_L6_V2()
+    # google-generativeai is deprecated (EOL Nov 2025); GoogleGenaiEmbeddingFunction
+    # is chromadb's wrapper around the current google-genai SDK.
+    embed_fn = embedding_functions.GoogleGenaiEmbeddingFunction(
+        model_name=EMBEDDING_MODEL, api_key_env_var="GOOGLE_API_KEY"
+    )
     return client.get_or_create_collection(COLLECTION_NAME, embedding_function=embed_fn)
 
 
-INDEX_BATCH_SIZE = 50
+INDEX_BATCH_SIZE = 10
+INDEX_BATCH_SLEEP_SECONDS = 10
+INDEX_MAX_RETRIES = 5
+
+
+def _add_batch_with_retry(collection, documents, metadatas, ids):
+    """The free-tier Gemini embedding quota is easy to trip mid-index; back off
+    and retry the same batch on 429s instead of losing the whole indexing run."""
+    wait = 15
+    for attempt in range(INDEX_MAX_RETRIES):
+        try:
+            collection.add(documents=documents, metadatas=metadatas, ids=ids)
+            return
+        except ValueError as e:
+            if "429" not in str(e) or attempt == INDEX_MAX_RETRIES - 1:
+                raise
+            print(f"Rate limited, retrying in {wait}s...", file=sys.stderr)
+            time.sleep(wait)
+            wait *= 2
 
 
 def index_if_needed(collection):
@@ -82,13 +108,14 @@ def index_if_needed(collection):
         return
     pages = load_pdfs(DOCS_DIR)
     chunks, metadatas, ids = build_chunks(pages)
-    for start in range(0, len(chunks), INDEX_BATCH_SIZE):
+    num_batches = (len(chunks) + INDEX_BATCH_SIZE - 1) // INDEX_BATCH_SIZE
+    for batch_num, start in enumerate(range(0, len(chunks), INDEX_BATCH_SIZE)):
         end = start + INDEX_BATCH_SIZE
-        collection.add(
-            documents=chunks[start:end],
-            metadatas=metadatas[start:end],
-            ids=ids[start:end],
+        _add_batch_with_retry(
+            collection, chunks[start:end], metadatas[start:end], ids[start:end]
         )
+        if batch_num + 1 < num_batches:
+            time.sleep(INDEX_BATCH_SLEEP_SECONDS)
     print(f"Indexed {len(chunks)} chunks from {len(pages)} pages.", file=sys.stderr)
 
 
