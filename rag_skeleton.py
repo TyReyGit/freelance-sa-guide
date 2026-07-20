@@ -1,5 +1,5 @@
 """
-Minimal RAG pipeline: pypdf -> chunk -> Gemini embeddings -> Chroma -> Gemini/Groq.
+Minimal RAG pipeline: pypdf -> chunk -> ONNX embeddings -> Chroma -> Gemini/Groq.
 No frameworks. Run: python rag_skeleton.py "your question" [--provider gemini|groq]
 """
 
@@ -69,16 +69,11 @@ def build_chunks(pages):
 
 
 # --- store / index --------------------------------------------------------
-EMBEDDING_MODEL = "gemini-embedding-001"
-
-
 def get_collection():
     client = chromadb.PersistentClient(path=CHROMA_DIR)
-    # google-generativeai is deprecated (EOL Nov 2025); GoogleGenaiEmbeddingFunction
-    # is chromadb's wrapper around the current google-genai SDK.
-    embed_fn = embedding_functions.GoogleGenaiEmbeddingFunction(
-        model_name=EMBEDDING_MODEL, api_key_env_var="GOOGLE_API_KEY"
-    )
+    # Runs locally via onnxruntime, no API key or daily quota — used for both
+    # indexing and querying so the two stay in the same vector space.
+    embed_fn = embedding_functions.ONNXMiniLM_L6_V2()
     return client.get_or_create_collection(COLLECTION_NAME, embedding_function=embed_fn)
 
 

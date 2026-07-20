@@ -99,12 +99,11 @@ def ask(request: AskRequest) -> AskResponse:
     # taking it as an argument (same knob rag_skeleton's own CLI uses via --provider).
     rag_skeleton._PROVIDER = request.provider
 
-    chunks = retrieve(request.question, k=4)
-
     try:
+        chunks = retrieve(request.question, k=4)
         answer = generate(request.question, chunks)
     except Exception:
-        logger.exception("generate() failed for question: %r", request.question)
+        logger.exception("retrieve()/generate() failed for question: %r", request.question)
         raise HTTPException(
             status_code=502,
             detail="The AI provider is temporarily unavailable, please try again",
