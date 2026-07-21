@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { QUESTION_POOL } from "@/lib/surpriseQuestions";
+
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/ask`;
 
 type Provider = "gemini" | "groq";
@@ -22,6 +24,13 @@ export default function ChatCard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AskResponse | null>(null);
+
+  function handleSurpriseMe() {
+    // Avoid handing back the question that is already in the box.
+    const choices = QUESTION_POOL.filter((q) => q !== question);
+    const pool = choices.length > 0 ? choices : QUESTION_POOL;
+    setQuestion(pool[Math.floor(Math.random() * pool.length)]);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -94,13 +103,24 @@ export default function ChatCard() {
             ))}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading || !question.trim()}
-            className="rounded-lg bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            {loading ? "Asking…" : "Ask"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleSurpriseMe}
+              disabled={loading}
+              className="rounded-lg border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              Surprise me
+            </button>
+
+            <button
+              type="submit"
+              disabled={loading || !question.trim()}
+              className="rounded-lg bg-zinc-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              {loading ? "Asking…" : "Ask"}
+            </button>
+          </div>
         </div>
       </form>
 

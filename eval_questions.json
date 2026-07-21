@@ -60,6 +60,46 @@
     "note": "Should confirm that beneficial ownership disclosure is required on ITR14 returns from the 2022 tax year onward, identifying the individual(s) who ultimately own or exercise effective control of the company — which in a sole-owner case would just be that person."
   },
   {
+    "question": "I just landed my first freelance client — do I need to register as a provisional taxpayer straight away?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should explain that a natural person earning income that is not remuneration (or remuneration from an employer not registered for employees' tax) is a provisional taxpayer, but that the exclusions matter for someone just starting out: no provisional tax applies if taxable income for the year doesn't exceed the tax threshold, or if income from interest, dividends, foreign dividends, rental from letting fixed property and remuneration from a non-registered employer doesn't exceed R30,000. Should note the obligation is assessed per year of assessment rather than triggered by a single client, and that an IRP6 must be submitted for both periods even if the amount due is nil."
+  },
+  {
+    "question": "What happens if I miss a provisional tax payment deadline?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should cite the paragraph 27 late-payment penalty: a 10% percentage-based penalty (under Chapter 15 of the TAA) levied on any late payment of provisional tax for the first and second periods. Should also mention section 89bis interest on the outstanding amount, and note that a paragraph 27 penalty already charged reduces any paragraph 20 underestimation penalty on the second period. If no return is submitted at all, the Commissioner may estimate the taxable income and determine the amount payable."
+  },
+  {
+    "question": "My freelance income varies a lot month to month — how do I estimate what to pay for provisional tax?",
+    "expected_source": "GEN-PT-01-G01-Guide-for-Provisional-Tax-External-Guide.pdf",
+    "note": "Should explain that payments are based on estimated taxable income for the year (including the taxable portion of the aggregate capital gain, which must be included in both the first and second calculations), and that the estimate may not be less than the 'basic amount' unless the Commissioner agrees to a lower one. Should define the basic amount as taxable income per the latest preceding assessment issued at least 14 days before the return is submitted, less any taxable capital gain, the taxable portion of retirement fund lump sum/severance benefits, and paragraph (d) gross income amounts. Should note the Commissioner can call for justification of an estimate and increase it, with no objection or appeal against the increase."
+  },
+  {
+    "question": "I run a small side business alongside freelancing — can I still qualify for turnover tax?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should explain that qualifying turnover is measured across the person's business activities against the R1 million limit, and walk through the main disqualifiers relevant to a sole proprietor: more than 20% of receipts from rendering a professional service, holding shares/interests in other companies, and (for partners) being in more than one partnership or being in a partnership where any partner is not a natural person. Should note that a business that no longer qualifies is deregistered from the first day of the month following the month in which it stopped qualifying."
+  },
+  {
+    "question": "What's the turnover limit to qualify for turnover tax?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should state the R1 million qualifying turnover threshold for a year of assessment, and note that exceeding it normally forces deregistration and a move to the normal income tax system — unless the increase is of a nominal and temporary nature (e.g. a once-off tender), in which case the taxpayer must apply to the Commissioner for a decision and submit the TT03 with a written motivation. Bonus: the section 48C transitional relief means a micro business deregistered solely for crossing R1 million isn't penalised for the resulting underpayment (effective 1 March 2018)."
+  },
+  {
+    "question": "If I'm registered for turnover tax, do I still need to deal with VAT?",
+    "expected_source": "TT-GEN-01-G01-Administration-of-Turnover-Tax-External-Guide.pdf",
+    "note": "Should say that registered micro businesses have been allowed to be registered for Turnover Tax and VAT simultaneously since 1 March 2012 — the two are not mutually exclusive. Should add that from 1 March 2014 a registered micro business may elect to submit VAT and/or PAYE returns on a six-monthly basis, at the end of August and February each tax year. Should not claim the guide sets out VAT registration thresholds or the VAT registration process, as it doesn't cover those."
+  },
+  {
+    "question": "I registered a company (Pty Ltd) for my freelance work — what is an ITR14 and when is it due?",
+    "expected_source": "IT-GEN-04-G01-How-to-complete-the-Income-Tax-Return-ITR14-for-Companies-External-Guide.pdf",
+    "note": "Should describe the ITR14 as the income tax return companies and close corporations file for a year of assessment — a legal declaration to SARS signed by the Company Representative/Public Officer, whose eFiling login serves as authentication. Should cover that it is requested and submitted via eFiling (it cannot be requested through the Contact Centre and SARS no longer issues blank copies; the published example may not be submitted), that legal entity details must be verified via 'Maintain SARS Registered Details' first, and that the form is built by a wizard whose answers determine the company classification and which sections display. On timing, the guide covers requesting/completing/submitting the return but does not state a filing deadline, so a correct answer should say the due date isn't specified in these documents rather than inventing one."
+  },
+  {
+    "question": "What supporting documents do I need to submit along with my ITR14?",
+    "expected_source": "IT-GEN-04-G01-How-to-complete-the-Income-Tax-Return-ITR14-for-Companies-External-Guide.pdf",
+    "note": "Should state that signed-off Annual Financial Statements are compulsory for Small Businesses and Medium to Large Businesses (including REIT companies) and optional for all other companies, and that the AFS must contain at minimum an income statement, balance sheet and notes, signed by the Company Representative/Public Officer. Should mention the schedules attached where applicable — GEN-001 Mining schedule, RCH01 for headquarter companies, and IT10A/B for controlled foreign companies — and that all relevant material must be retained for five years from the date of submission and produced on request. Bonus: from 16 September 2022 the IT14SD is no longer required for verification, replaced by a letter requesting specific relevant material."
+  },
+  {
     "question": "What's the VAT registration threshold and how do I go about registering for VAT as a freelancer?",
     "expected_source": "none",
     "note": "None of the three supplied guides (Provisional Tax, Turnover Tax, ITR14) covers VAT registration or thresholds — a correct answer should say this isn't covered in the provided documents rather than guessing or inventing a threshold/process."
