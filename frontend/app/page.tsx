@@ -4,7 +4,10 @@ export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center bg-zinc-50 px-4 py-16 dark:bg-black sm:py-24">
       <div className="mb-8 max-w-xl text-center">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          FreelanceSA Guide
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
           Ask questions about tax as a freelancer in South Africa. Answers are
           grounded in official SARS guides with page citations — and the tool
           will tell you honestly when something isn&apos;t covered in the
