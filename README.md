@@ -10,19 +10,23 @@ Run this first, before anything else — it downloads the three source PDFs from
 python setup_docs.py
 ```
 
+## Features
+
+- **"Surprise me" button** — populates the input with a random question from a pool of 20 eval-verified questions (doesn't auto-submit; the question is editable before asking). Repeat clicks avoid immediately repeating the same question. Added after family testing surfaced the "blank box" problem — first-time users didn't know what to ask.
+
 ## Evaluation
 
 Retrieval quality is tracked with `eval_retrieval.py`, which runs `retrieve()` for each question in `eval_questions.json` and checks whether the expected source document appears in the top-k hits (no LLM call — retrieval only).
 
-**2026-07-16 baseline:**
+**2026-07-2X baseline (updated):**
 
-- 15 questions built: 12 answerable (drawn from the three source PDFs) + 3 deliberately unanswerable (topics not covered by any of the docs, e.g. VAT registration, home office deductions, UIF/COIDA registration)
+- 23 questions total: 20 answerable (drawn from the three source PDFs) + 3 deliberately unanswerable (topics not covered by any of the docs, e.g. VAT registration, home office deductions, UIF/COIDA registration)
 - Config: `k=4`, chunk size 500 tokens, overlap 50 tokens
-- Result: **12/12 hit rate** on the answerable questions
+- Result: **20/20 hit rate** on the answerable questions
 
-Unanswerable questions (`expected_source: "none"`) are excluded from hit-rate scoring, since there's no expected source to match against — they're included in the question set to check that the pipeline doesn't fabricate an answer when the topic isn't in the documents, not to score retrieval accuracy.
+The pool grew from the original 12 to 20 when 8 new questions were added to support the "Surprise me" button (see Features above); all 8 were run through `eval_retrieval.py` and passed before being added to the live question pool. The 3 unanswerable questions are unchanged and still excluded from hit-rate scoring, for the same reason as before — they check that the pipeline doesn't fabricate an answer when the topic isn't in the documents, not retrieval accuracy.
 
-Retrieval was retested at `k=2` with no degradation (still 12/12). `k=4` is kept as the default anyway, for safety margin on messier real-world questions than the eval set covers.
+Retrieval was retested at `k=2` against the original 12 with no degradation (still 12/12); this has not yet been re-verified against the full 20 — pending re-run. `k=4` is kept as the default anyway, for safety margin on messier real-world questions than the eval set covers.
 
 Run it with:
 
@@ -40,7 +44,7 @@ Getting embeddings to work reliably on Render's 512MB free-tier web service took
 4. **Moving indexing to a background thread fixed the timeout, not the quota.** `main.py`'s `startup_event` kicks off `_build_index()` on a daemon thread so `uvicorn` binds its port immediately instead of blocking on indexing; `/ask` returns `503` with `"Index is still building, try again in a few minutes"` until `_index_status` flips to `"ready"`. That solved the port-binding timeout, but Render's free tier has no persistent disk — `chroma_db/` is empty on every single cold start, so every restart re-indexed from scratch and re-burned that same daily quota.
 5. **Final fix: ship a pre-built index instead of rebuilding it on every boot.** `rebuild_index.py` now does the (quota-consuming) embedding work by hand, offline, and `--publish`es the resulting `chroma_db/` as a `chroma_db.tar.gz` GitHub Release asset. `download_index.py` pulls and extracts that tarball on startup — zero embedding calls at boot. Query-time embedding was then switched back to the local ONNX model (`ONNXMiniLM_L6_V2`, used for both indexing and querying so both sides stay in the same vector space), which removed the Google API daily-quota dependency entirely rather than just working around it.
 
-`eval_retrieval.py` was re-run after every one of these changes and held at a steady **12/12 hit rate** throughout — proof that none of the memory/quota fixes silently degraded retrieval, and the reason building that eval harness in Week 2 paid for itself repeatedly instead of just being a one-off sanity check.
+`eval_retrieval.py` was re-run after every one of these changes and held at a steady **12/12 hit rate** throughout (on the original question set) — proof that none of the memory/quota fixes silently degraded retrieval, and the reason building that eval harness in Week 2 paid for itself repeatedly instead of just being a one-off sanity check.
 
 **Separately: a Gemini reasoning-model refusal bug.** Gemini would occasionally answer `"not in the documents"` even when the retrieved context clearly contained the relevant passage. Running the same question with `--debug` (which prints the full prompt and raw API response to stderr) showed the correct context was in fact being sent — and re-running the identical prompt against Groq (`llama-3.3-70b-versatile`) got a correct, grounded answer from the exact same context, confirming the issue was Gemini being overly conservative about the refusal instruction rather than a retrieval problem. The fix was softening `_build_prompt()`'s wording in `rag_skeleton.py` from an unconditional "if in doubt, refuse" framing to the current instruction: *"If the context contains relevant information that answers the question, use it and cite your sources. Only reply exactly 'not in the documents' if the context has no relevant information at all."*
 
@@ -48,7 +52,7 @@ Getting embeddings to work reliably on Render's 512MB free-tier web service took
 
 Retrieval quality depends on how closely a question's phrasing overlaps with the source text — this is a plain nearest-neighbor lookup over 500-token chunks (`k=4`, 50-token overlap), with no query rewriting or hybrid keyword/vector search. Vague or compound questions can occasionally miss relevant context even when it exists in the corpus. For example, "I just started freelancing, do I need to do anything about tax right away?" missed a passage that was actually relevant, because the question doesn't share enough vocabulary with the source text's phrasing (which discusses "provisional taxpayer" registration and payment periods, not "do anything right away") to score highly against it in embedding space.
 
-This wasn't caught by `eval_retrieval.py` — the eval set's questions were phrased with enough of the source guides' own terminology to score well, so the 12/12 hit rate doesn't fully capture this failure mode. Worth treating as a real gap, not something the eval hides: the natural next steps are hybrid search (combine vector similarity with keyword/BM25 matching so exact-term overlap isn't required) and query rewriting (expand or reformulate a vague user question into terms closer to the source vocabulary before retrieving).
+This wasn't caught by `eval_retrieval.py` — the eval set's questions were phrased with enough of the source guides' own terminology to score well, so the hit rate doesn't fully capture this failure mode. Worth treating as a real gap, not something the eval hides: the natural next steps are hybrid search (combine vector similarity with keyword/BM25 matching so exact-term overlap isn't required) and query rewriting (expand or reformulate a vague user question into terms closer to the source vocabulary before retrieving).
 
 ## Attribution & disclaimer
 
