@@ -12,9 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Freelance SA Guide",
-  description: "Ask questions about the freelance SA guide, answered with sources.",
+export const metadata = {
+  title: "FreelanceSA Guide",
+  description:
+    "Ask tax questions as a South African freelancer. Answers grounded in official SARS guides, with document and page citations — and honest refusals when the answer isn't in the sources.",
 };
 
 export default function RootLayout({
