@@ -18,7 +18,7 @@ python setup_docs.py
 
 Retrieval quality is tracked with `eval_retrieval.py`, which runs `retrieve()` for each question in `eval_questions.json` and checks whether the expected source document appears in the top-k hits (no LLM call — retrieval only).
 
-**2026-07-2X baseline (updated):**
+**2026-07-24 baseline (updated):**
 
 - 23 questions total: 20 answerable (drawn from the three source PDFs) + 3 deliberately unanswerable (topics not covered by any of the docs, e.g. VAT registration, home office deductions, UIF/COIDA registration)
 - Config: `k=4`, chunk size 500 tokens, overlap 50 tokens
