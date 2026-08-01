@@ -26,7 +26,7 @@ Retrieval quality is tracked with `eval_retrieval.py`, which runs `retrieve()` f
 
 The pool grew from the original 12 to 20 when 8 new questions were added to support the "Surprise me" button (see Features above); all 8 were run through `eval_retrieval.py` and passed before being added to the live question pool. The 3 unanswerable questions are unchanged and still excluded from hit-rate scoring, for the same reason as before — they check that the pipeline doesn't fabricate an answer when the topic isn't in the documents, not retrieval accuracy.
 
-Retrieval was retested at `k=2` against the original 12 with no degradation (still 12/12); this has not yet been re-verified against the full 20 — pending re-run. `k=4` is kept as the default anyway, for safety margin on messier real-world questions than the eval set covers.
+Retrieval was retested at `k=2` against the full 20-question set on 2026-08-01, with no degradation (20/20) — closing the gap left when the original `k=2` retest only covered the first 12 questions. `k=4` is kept as the default anyway, for safety margin on messier real-world questions than the eval set covers.
 
 Run it with:
 
